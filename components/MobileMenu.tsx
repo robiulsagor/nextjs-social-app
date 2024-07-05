@@ -8,9 +8,9 @@ function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="">
+    <div className="block md:hidden">
       <div
-        className="flex flex-col  gap-[4.5px] cursor-pointer   transition duration-300"
+        className="flex flex-col gap-[4.5px] cursor-pointer transition duration-300"
         onClick={() => setIsOpen(!isOpen)}
       >
         <div

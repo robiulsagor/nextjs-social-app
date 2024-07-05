@@ -1,7 +1,9 @@
 {
   "dependencies": {
+    "@clerk/nextjs": "^5.2.2",
     "@types/react-dom": "^18.3.0",
     "babel-plugin-react-compiler": "^0.0.0-experimental-696af53-20240625",
+    "framer-motion": "^12.0.0-alpha.0",
     "next": "^15.0.0-rc.0",
     "react": "^19.0.0-rc-3da26163a3-20240704",
     "react-dom": "^19.0.0-rc-3da26163a3-20240704"
