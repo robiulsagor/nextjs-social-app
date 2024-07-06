@@ -13,14 +13,14 @@ export default function Navbar() {
   return (
     <div className="flex items-center justify-between h-20  text-base gap-6">
       {/* left */}
-      <div className="font-bold w-[20%] border text-xl md:hidden lg:block">
+      <div className="font-bold w-[20%]  text-xl md:hidden lg:block">
         <Link href="/">
           SAGAR<span className="text-amber-600">SOCIAL</span>
         </Link>
       </div>
 
       {/* center */}
-      <div className="hidden md:flex justify-between items-center w-[50%] border">
+      <div className="hidden md:flex justify-between items-center w-[50%] ">
         <div className="flex gap-5 text-gray-600">
           <Link href="/" className="flex items-center gap-1 hover:underline">
             <Image src="/assets/home.svg" width={25} height={25} alt="home" />
@@ -42,11 +42,11 @@ export default function Navbar() {
           </Link>
         </div>
 
-        <form className="hidden lg:block border bg-slate-100 rounded-md w-[200px] relative">
+        <form className="hidden xl:block border bg-slate-100 rounded-md  relative py-1">
           <input
             type="text"
             name="search"
-            className="outline-none w-full bg-transparent py-1 px-1"
+            className="outline-none w-full bg-transparent  px-1"
             placeholder="Search"
           />
           <button type="submit">
@@ -82,9 +82,10 @@ export default function Navbar() {
             <div className="cursor-pointer">
               <Image
                 src="/assets/people.png"
-                width={20}
-                height={20}
+                width={24}
+                height={24}
                 alt="people"
+                title="Friends"
               />
             </div>
             <div className="cursor-pointer">
@@ -93,6 +94,7 @@ export default function Navbar() {
                 width={20}
                 height={20}
                 alt="people"
+                title="Messages"
               />
             </div>
             <div className="cursor-pointer">
@@ -101,6 +103,7 @@ export default function Navbar() {
                 width={20}
                 height={20}
                 alt="people"
+                title="Notifications"
               />
             </div>
             <UserButton />
