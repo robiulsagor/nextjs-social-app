@@ -62,7 +62,7 @@ export default function Navbar() {
       </div>
 
       {/* right */}
-      <div className="w-[20%] flex justify-end items-center gap-4 xl:gap-8">
+      <div className="w-[30%] flex justify-end items-center gap-4 xl:gap-8">
         <MobileMenu />
 
         {/* while loading */}
