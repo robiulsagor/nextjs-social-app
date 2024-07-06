@@ -2,7 +2,7 @@ import Image from "next/image";
 
 function AddPost() {
   return (
-    <div className="p-4 bg-white rounded-lg flex gap-4 justify-between text-sm">
+    <div className="p-4 bg-white shadow-md rounded-lg flex gap-4 justify-between text-sm">
       {/* avatar */}
       <Image
         src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=600"

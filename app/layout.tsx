@@ -26,7 +26,7 @@ export default function RootLayout({
           <div className="w-full  px-4  md:px-8 lg:px-12 xl:px-24 2xl:px-48">
             <Navbar />
           </div>
-          <div className="bg-slate-100 px-4  md:px-8 lg:px-12 xl:px-24 2xl:px-48 h-[calc(100vh-80px)]">
+          <div className="bg-slate-100 px-4  md:px-8 lg:px-12 xl:px-24 2xl:px-48 ">
             {children}
           </div>
         </body>
