@@ -1,3 +1,4 @@
+import Ad from "./Ad";
 import LeftLinks from "./LeftLinks";
 import ProfileCard from "./ProfileCard";
 
@@ -7,6 +8,7 @@ function LeftMenu({ page }: { page: "home" | "profile" }) {
       {page === "home" && <ProfileCard />}
 
       <LeftLinks />
+      <Ad size="sm" />
     </div>
   );
 }
