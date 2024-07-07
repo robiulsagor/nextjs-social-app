@@ -2,6 +2,7 @@ import Ad from "./Ad";
 import Birthdays from "./BirthDays";
 import FriendRequests from "./FriendRequests";
 import UserInfoCard from "./UserInfoCard";
+import UserMediaCard from "./UserMediaCard";
 
 function RightMenu({ userId }: { userId?: string }) {
   return (
@@ -9,6 +10,7 @@ function RightMenu({ userId }: { userId?: string }) {
       {userId && (
         <>
           <UserInfoCard userId={userId} />
+          <UserMediaCard userId={userId} />
         </>
       )}
       <FriendRequests />

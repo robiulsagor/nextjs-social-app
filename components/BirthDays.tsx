@@ -27,8 +27,8 @@ function Birthdays() {
       <div className="bg-slate-100 flex items-center justify-normal gap-4 rounded-lg p-4">
         <Image
           src={"/assets/gift.png"}
-          width={20}
-          height={20}
+          width={28}
+          height={28}
           alt="gift"
           className="cursor-pointer"
         />
