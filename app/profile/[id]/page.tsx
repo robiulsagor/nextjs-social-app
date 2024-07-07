@@ -34,26 +34,32 @@ function ProfilePage() {
               <h2 className="font-semibold text-2xl text-center mt-20 mb-4">
                 Akash Barman
               </h2>
-              <div className="flex items-center justify-center gap-4 mb-4">
+              <div className="flex items-center justify-center gap-5 mb-4">
                 <div className="flex flex-col items-center">
-                  <span className="text-lg font-semibold text-gray-600">
+                  <span className="md:text-lg font-semibold text-gray-600">
                     123
                   </span>
-                  <span className="text-gray-500 ">Posts</span>
+                  <span className="text-gray-500 text-sm md:text-base">
+                    Posts
+                  </span>
                 </div>
 
                 <div className="flex flex-col items-center">
-                  <span className="text-lg font-semibold text-gray-500">
+                  <span className="md:text-lg font-semibold text-gray-500">
                     1.7K
                   </span>
-                  <span className="text-gray-500 ">Followers</span>
+                  <span className="text-gray-500 text-sm md:text-base">
+                    Followers
+                  </span>
                 </div>
 
                 <div className="flex flex-col items-center">
-                  <span className="text-lg font-semibold text-gray-500">
+                  <span className="md:text-lg font-semibold text-gray-500">
                     1.5K
                   </span>
-                  <span className="text-gray-500 ">Following</span>
+                  <span className="text-gray-500 text-sm md:text-base">
+                    Following
+                  </span>
                 </div>
               </div>
             </div>
