@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Comments from "./Comments";
 
 function Post() {
   return (
@@ -48,7 +49,7 @@ function Post() {
       </div>
 
       {/* INTERACTIONS */}
-      <div className="flex  justify-between items-center text-sm">
+      <div className="flex  justify-between items-center text-sm my-2">
         <div className="flex gap-2 md:gap-8 ">
           <div className="flex gap-4 items-center bg-slate-100 p-2 rounded-xl">
             <Image
@@ -94,6 +95,9 @@ function Post() {
           </div>
         </div>
       </div>
+
+      {/* COMMENTS */}
+      <Comments />
     </div>
   );
 }
