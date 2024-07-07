@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 function ProfileCard() {
   return (
@@ -63,9 +64,12 @@ function ProfileCard() {
       </div>
 
       <div className="flex justify-center">
-        <button className="p-2 text-xs bg-blue-500 text-white rounded-md">
+        <Link
+          href="/profile/abcd"
+          className="p-2 text-xs bg-blue-500 text-white rounded-md"
+        >
           My Profile
-        </button>
+        </Link>
       </div>
     </div>
   );
