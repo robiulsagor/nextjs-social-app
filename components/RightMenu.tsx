@@ -1,3 +1,4 @@
+import Ad from "./Ad";
 import Birthdays from "./BirthDays";
 import FriendRequests from "./FriendRequests";
 
@@ -6,6 +7,7 @@ function RightMenu({ userId }: { userId?: string }) {
     <div className="flex flex-col gap-6">
       <FriendRequests />
       <Birthdays />
+      <Ad size="md" />
     </div>
   );
 }
