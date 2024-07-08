@@ -1,23 +1,40 @@
+import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
 import Link from "next/link";
+import prisma from "../lib/client";
 
-function ProfileCard() {
+async function ProfileCard() {
+  const { userId } = auth();
+
+  if (!userId) return null;
+
+  const user = await prisma.user.findFirst({
+    where: {
+      id: userId,
+    },
+    include: {
+      _count: {
+        select: {
+          followers: true,
+        },
+      },
+    },
+  });
+
+  if (!user) return null;
+
   return (
     <div className="p-4 bg-white rounded-lg shadow-md flex flex-col gap-4  ">
       <div className="relative w-full h-20">
         <Image
-          src={
-            "https://images.pexels.com/photos/15804651/pexels-photo-15804651/free-photo-of-people-together-on-motorcycle-on-road-in-mountains.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load"
-          }
+          src={user?.cover || "/assets/noCover.jpg"}
           fill
           alt="img"
           className="object-cover rounded-md"
         />
 
         <Image
-          src={
-            "https://images.pexels.com/photos/3408744/pexels-photo-3408744.jpeg?auto=compress&cs=tinysrgb&w=600"
-          }
+          src={user?.avatar || "/assets/noAvatar.png"}
           width={48}
           height={48}
           alt="profile"
@@ -26,7 +43,9 @@ function ProfileCard() {
       </div>
 
       <span className="font-semibold text-xl text-center mt-2">
-        Akash Barman
+        {user.name && user.surname
+          ? user.name + " " + user.surname
+          : user.username}
       </span>
 
       <div className="flex items-center justify-center gap-2">
@@ -60,12 +79,15 @@ function ProfileCard() {
           />
         </div>
 
-        <span className="text-gray-500 text-xs">500 Followers</span>
+        <span className="text-gray-500 text-xs">
+          {" "}
+          {user._count.followers} Followers
+        </span>
       </div>
 
       <div className="flex justify-center">
         <Link
-          href="/profile/abcd"
+          href={`/profile/${user.username}`}
           className="p-2 text-xs bg-blue-500 text-white rounded-md"
         >
           My Profile
