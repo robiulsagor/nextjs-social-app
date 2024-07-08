@@ -14,7 +14,7 @@ datasource db {
 }
 
 model User {
-  id                    String          @id @default(uuid())
+  id                    String          @id
   username              String          @unique
   name                  String?
   surname               String?
@@ -39,7 +39,7 @@ model User {
 }
 
 model Post {
-  id        String    @id @default(uuid())
+  id        String    @id
   desc      String
   img       String?
   createdAt DateTime  @default(now())
@@ -51,7 +51,7 @@ model Post {
 }
 
 model Comment {
-  id        String   @id @default(uuid())
+  id        String   @id
   desc      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -63,7 +63,7 @@ model Comment {
 }
 
 model Like {
-  id        String   @id @default(uuid())
+  id        String   @id
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
@@ -74,7 +74,7 @@ model Like {
 }
 
 model Follower {
-  id          String   @id @default(uuid())
+  id          String   @id
   createdAt   DateTime @default(now())
   follower    User     @relation("Followers", fields: [followerId], references: [id], onDelete: Cascade)
   followerId  String
@@ -83,7 +83,7 @@ model Follower {
 }
 
 model FollowRequest {
-  id                    String   @id @default(uuid())
+  id                    String   @id
   createdAt             DateTime @default(now())
   followRequestSender   User     @relation("FollowRequestSender", fields: [senderId], references: [id], onDelete: Cascade)
   senderId              String
@@ -94,7 +94,7 @@ model FollowRequest {
 }
 
 model Block {
-  id        String   @id @default(uuid())
+  id        String   @id
   createdAt DateTime @default(now())
   blocker   User     @relation("BlockSent", fields: [blockerId], references: [id], onDelete: Cascade)
   blockerId String
@@ -105,7 +105,7 @@ model Block {
 }
 
 model Story {
-  id        String   @id @default(uuid())
+  id        String   @id
   createdAt DateTime @default(now())
   expiresAt DateTime
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
