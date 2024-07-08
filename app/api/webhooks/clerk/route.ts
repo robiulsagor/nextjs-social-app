@@ -74,20 +74,28 @@ export async function POST(req: Request) {
         status: 400,
       });
     }
-
-    console.log("User created: ", body);
   }
 
-  //   if(evt.type === 'user.updated') {
-  //     try {
+  if (evt.type === "user.updated") {
+    try {
+      await prisma.user.update({
+        where: { id: evt.data.id },
+        data: {
+          username: evt.data.username,
+          avatar: evt.data.image_url || "noAvatar.png",
+        },
+      });
 
-  //     } catch (error) {
-  //         console.log("Error updating user: ", error);
-  //         return new Response('Error occured', {
-  //             status: 400,
-  //         })
-  //     }
-  //   }
+      return new Response("User has been updated", {
+        status: 200,
+      });
+    } catch (error) {
+      console.log("Error updating user: ", error);
+      return new Response("Error occured", {
+        status: 400,
+      });
+    }
+  }
 
-  return new Response("", { status: 200 });
+  return new Response("Webhook", { status: 200 });
 }
