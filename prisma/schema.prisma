@@ -39,7 +39,7 @@ model User {
 }
 
 model Post {
-  id        String    @id
+  id        Int       @id @default(autoincrement())
   desc      String
   img       String?
   createdAt DateTime  @default(now())
@@ -58,7 +58,7 @@ model Comment {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId    String
+  postId    Int
   likes     Like[]
 }
 
@@ -68,7 +68,7 @@ model Like {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId    String
+  postId    Int
   comment   Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
   commentId String?
 }
@@ -114,6 +114,6 @@ model Story {
 }
 
 model NewTest {
-  id   String @id
+  id   Int    @id @default(autoincrement())
   name String
 }
