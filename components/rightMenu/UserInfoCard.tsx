@@ -1,14 +1,54 @@
+import { auth } from "@clerk/nextjs/server";
 import { User } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
+import prisma from "../../lib/client";
+import UserInfoCardInteractions from "./UserInfoCardInteractions";
 
-function UserInfoCard({ user }: { user: User }) {
+async function UserInfoCard({ user }: { user: User }) {
   const createdAt = new Date(user.createdAt);
   const formattedDate = createdAt.toLocaleDateString("en-US", {
     day: "numeric",
     month: "short",
     year: "numeric",
   });
+
+  const { userId: currentUserId } = auth();
+
+  let isUserBlocked = false;
+  let isUserFollowing = false;
+  let isFollowingSent = false;
+
+  if (currentUserId) {
+    // for blockings
+    const blockRes = await prisma.block.findFirst({
+      where: {
+        blockerId: currentUserId,
+        blockedId: user.id,
+      },
+    });
+
+    blockRes ? (isUserBlocked = true) : (isUserBlocked = false);
+
+    // for followings
+    const followingRes = await prisma.follower.findFirst({
+      where: {
+        followerId: currentUserId,
+        followingId: user.id,
+      },
+    });
+    followingRes ? (isUserFollowing = true) : (isUserFollowing = false);
+
+    // for following sent
+    const followingSentRes = await prisma.followRequest.findFirst({
+      where: {
+        senderId: currentUserId,
+        receiverId: user.id,
+      },
+    });
+    followingSentRes ? (isFollowingSent = true) : (isFollowingSent = false);
+  }
+
   return (
     <div className="p-4 bg-white rounded-lg shadow-md flex flex-col gap-4 text-sm text-gray-700">
       {/* top */}
@@ -89,13 +129,13 @@ function UserInfoCard({ user }: { user: User }) {
         </div>
       </div>
 
-      <button className="bg-blue-600 text-white border-none rounded-lg p-2  hover:opacity-75 transition-all">
-        Following
-      </button>
-
-      <button className="flex justify-end text-red-400 text-xs font-medium cursor-pointer">
-        Block User
-      </button>
+      <UserInfoCardInteractions
+        userId={user.id}
+        currentUserId={currentUserId}
+        isBlocked={isUserBlocked}
+        isFollowing={isUserFollowing}
+        isFollowingSent={isFollowingSent}
+      />
     </div>
   );
 }
