@@ -1,9 +1,50 @@
+import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
+import { notFound } from "next/navigation";
 import Feed from "../../../components/Feed";
 import LeftMenu from "../../../components/LeftMenu";
 import RightMenu from "../../../components/RightMenu";
+import prisma from "../../../lib/client";
 
-function ProfilePage() {
+async function ProfilePage({ params }: { params: { username: string } }) {
+  const username = params.username;
+
+  const user = await prisma.user.findFirst({
+    where: {
+      username,
+    },
+    include: {
+      _count: {
+        select: {
+          followers: true,
+          following: true,
+          posts: true,
+        },
+      },
+    },
+  });
+
+  if (!user) return notFound();
+
+  const { userId: currentUser } = auth();
+
+  let isBlocked;
+
+  if (currentUser) {
+    const res = await prisma.block.findFirst({
+      where: {
+        blockerId: user.id,
+        blockedId: currentUser,
+      },
+    });
+
+    if (res) isBlocked = true;
+  } else {
+    isBlocked = false;
+  }
+
+  if (isBlocked) return notFound();
+
   return (
     <div className="flex gap-6 pt-6">
       <div className="hidden xl:block w-[20%] ">
@@ -15,13 +56,13 @@ function ProfilePage() {
             {/* cover and profile img */}
             <div className="relative h-64 ">
               <Image
-                src="https://images.pexels.com/photos/189349/pexels-photo-189349.jpeg?auto=compress&cs=tinysrgb&w=600"
+                src={user?.cover || "/assets/noCover.jpg"}
                 fill
                 alt="cover image"
                 className="object-cover rounded-lg"
               />
               <Image
-                src="https://images.pexels.com/photos/1072842/pexels-photo-1072842.jpeg?auto=compress&cs=tinysrgb&w=600"
+                src={user?.avatar || "/assets/noAvatar.png"}
                 alt="profile image"
                 width={128}
                 height={128}
@@ -32,12 +73,14 @@ function ProfilePage() {
             {/* name and bio */}
             <div>
               <h2 className="font-semibold text-2xl text-center mt-20 mb-4">
-                Akash Barman
+                {user.name && user.surname
+                  ? user.name + " " + user.surname
+                  : user.username}
               </h2>
               <div className="flex items-center justify-center gap-5 mb-4">
                 <div className="flex flex-col items-center">
                   <span className="md:text-lg font-semibold text-gray-600">
-                    123
+                    {user._count.posts}
                   </span>
                   <span className="text-gray-500 text-sm md:text-base">
                     Posts
@@ -46,7 +89,7 @@ function ProfilePage() {
 
                 <div className="flex flex-col items-center">
                   <span className="md:text-lg font-semibold text-gray-500">
-                    1.7K
+                    {user._count.followers}
                   </span>
                   <span className="text-gray-500 text-sm md:text-base">
                     Followers
@@ -55,7 +98,7 @@ function ProfilePage() {
 
                 <div className="flex flex-col items-center">
                   <span className="md:text-lg font-semibold text-gray-500">
-                    1.5K
+                    {user._count.following}
                   </span>
                   <span className="text-gray-500 text-sm md:text-base">
                     Following
@@ -68,7 +111,7 @@ function ProfilePage() {
         </div>
       </div>
       <div className="hidden lg:block w-[30%] ">
-        <RightMenu userId="abcd" />
+        <RightMenu user={user} />
       </div>
     </div>
   );

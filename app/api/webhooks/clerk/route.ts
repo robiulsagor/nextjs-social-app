@@ -63,7 +63,7 @@ export async function POST(req: Request) {
           id: evt.data.id,
           username: evt.data.username,
           avatar: evt.data.image_url || "noAvatar.png",
-          cover: "noCover.png",
+          cover: "",
         },
       });
 
