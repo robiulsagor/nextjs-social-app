@@ -1,4 +1,5 @@
 import { User } from "@prisma/client";
+import { Suspense } from "react";
 import Ad from "../Ad";
 import Birthdays from "./BirthDays";
 import FriendRequests from "./FriendRequests";
@@ -10,8 +11,12 @@ function RightMenu({ user }: { user?: User }) {
     <div className="flex flex-col gap-6">
       {user && (
         <>
-          <UserInfoCard user={user} />
-          <UserMediaCard user={user} />
+          <Suspense fallback={<div>Loading...</div>}>
+            <UserInfoCard user={user} />
+          </Suspense>
+          <Suspense fallback={<div>Loading...</div>}>
+            <UserMediaCard user={user} />
+          </Suspense>
         </>
       )}
       <FriendRequests />

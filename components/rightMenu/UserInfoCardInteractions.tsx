@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useOptimistic, useState } from "react";
 import { switchFollowing } from "../../lib/actions";
 
 function UserInfoCardInteractions({
@@ -23,6 +23,7 @@ function UserInfoCardInteractions({
   });
 
   const follow = async () => {
+    switchOptimisticFollow("");
     try {
       await switchFollowing(userId);
 
@@ -36,16 +37,27 @@ function UserInfoCardInteractions({
     }
   };
 
+  const [optimisticFollow, switchOptimisticFollow] = useOptimistic(
+    userState,
+    (state) => {
+      return {
+        ...state,
+        following: state.following && false,
+        followingSent: !state.following && !state.followingSent ? true : false,
+      };
+    }
+  );
+
   return (
     <>
       <form action={follow}>
         <button className="w-full bg-blue-600 text-white border-none rounded-lg p-2  hover:opacity-75 transition-all">
-          {isFollowing
+          {optimisticFollow.following
             ? "Following"
-            : isFollowingSent
+            : optimisticFollow.followingSent
             ? "Friend Request Sent"
             : "Follow"}
-        </button>{" "}
+        </button>
       </form>
 
       <form action="" className="self-end">

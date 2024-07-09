@@ -87,7 +87,7 @@ async function UserInfoCard({ user }: { user: User }) {
         <div className="flex items-center gap-2 ">
           <Image src={"/assets/map.png"} width={16} height={16} alt="map" />
           <p>
-            Living in <span className="font-semibold">Bagerhat</span>
+            Living in <span className="font-semibold">{user.city} </span>
           </p>
         </div>
       )}
@@ -98,7 +98,7 @@ async function UserInfoCard({ user }: { user: User }) {
         <div className="flex items-center gap-2 ">
           <Image src={"/assets/school.png"} width={16} height={16} alt="map" />
           <p>
-            Went to <span className="font-semibold">Govt PC College</span>
+            Went to <span className="font-semibold">{user.school} </span>
           </p>
         </div>
       )}
@@ -108,7 +108,7 @@ async function UserInfoCard({ user }: { user: User }) {
         <div className="flex items-center gap-2 ">
           <Image src={"/assets/work.png"} width={16} height={16} alt="map" />
           <p>
-            Works at <span className="font-semibold">Web Developer</span>
+            Works at <span className="font-semibold">{user.work} </span>
           </p>
         </div>
       )}
@@ -118,7 +118,7 @@ async function UserInfoCard({ user }: { user: User }) {
           <div className="flex items-center gap-1">
             <Image src={"/assets/link.png"} width={16} height={16} alt="map" />
             <Link href="/" className="text-blue-500 font-semibold">
-              sagor.dev
+              {user.website}
             </Link>
           </div>
         )}
