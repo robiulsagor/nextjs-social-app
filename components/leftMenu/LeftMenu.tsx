@@ -1,4 +1,4 @@
-import Ad from "./Ad";
+import Ad from "../Ad";
 import LeftLinks from "./LeftLinks";
 import ProfileCard from "./ProfileCard";
 
