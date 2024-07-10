@@ -48,3 +48,32 @@ export const switchFollowing = async (userId: string) => {
     throw new Error(" Error occured while following ");
   }
 };
+
+export const switchBlocked = async (userId: string) => {
+  const { userId: currentUserId } = auth();
+  try {
+    const existingBlock = await prisma.block.findFirst({
+      where: {
+        blockerId: currentUserId,
+        blockedId: userId,
+      },
+    });
+
+    if (existingBlock) {
+      await prisma.block.delete({
+        where: {
+          id: existingBlock.id,
+        },
+      });
+    } else {
+      await prisma.block.create({
+        data: {
+          blockerId: currentUserId,
+          blockedId: userId,
+        },
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};

@@ -1,7 +1,7 @@
 "use client";
 
 import { useOptimistic, useState } from "react";
-import { switchFollowing } from "../../lib/actions";
+import { switchBlocked, switchFollowing } from "../../lib/actions";
 
 function UserInfoCardInteractions({
   userId,
@@ -23,7 +23,7 @@ function UserInfoCardInteractions({
   });
 
   const follow = async () => {
-    switchOptimisticFollow("");
+    switchOptimisticState("follow");
     try {
       await switchFollowing(userId);
 
@@ -37,32 +37,48 @@ function UserInfoCardInteractions({
     }
   };
 
-  const [optimisticFollow, switchOptimisticFollow] = useOptimistic(
-    userState,
-    (state) => {
-      return {
-        ...state,
-        following: state.following && false,
-        followingSent: !state.following && !state.followingSent ? true : false,
-      };
+  const block = async () => {
+    switchOptimisticState("block");
+    try {
+      await switchBlocked(userId);
+
+      setUserState((prev) => ({
+        ...prev,
+        blocked: !prev.blocked,
+      }));
+    } catch (error) {
+      console.log("error");
     }
+  };
+
+  const [optimisticState, switchOptimisticState] = useOptimistic(
+    userState,
+    (state, value: "follow" | "block") =>
+      value === "follow"
+        ? {
+            ...state,
+            following: state.following && false,
+            followingSent:
+              !state.following && !state.followingSent ? true : false,
+          }
+        : { ...state, blocked: !state.blocked }
   );
 
   return (
     <>
       <form action={follow}>
         <button className="w-full bg-blue-600 text-white border-none rounded-lg p-2  hover:opacity-75 transition-all">
-          {optimisticFollow.following
+          {optimisticState.following
             ? "Following"
-            : optimisticFollow.followingSent
+            : optimisticState.followingSent
             ? "Friend Request Sent"
             : "Follow"}
         </button>
       </form>
 
-      <form action="" className="self-end">
+      <form action={block} className="self-end">
         <button className="text-red-400 text-xs font-medium cursor-pointer">
-          {isBlocked ? "Unblock" : "Block User"}
+          {optimisticState.blocked ? "Unblock" : "Block User"}
         </button>
       </form>
     </>
