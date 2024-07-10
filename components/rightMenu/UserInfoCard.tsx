@@ -129,13 +129,14 @@ async function UserInfoCard({ user }: { user: User }) {
         </div>
       </div>
 
-      <UserInfoCardInteractions
-        userId={user.id}
-        currentUserId={currentUserId}
-        isBlocked={isUserBlocked}
-        isFollowing={isUserFollowing}
-        isFollowingSent={isFollowingSent}
-      />
+      {currentUserId && currentUserId !== user.id && (
+        <UserInfoCardInteractions
+          userId={user.id}
+          isBlocked={isUserBlocked}
+          isFollowing={isUserFollowing}
+          isFollowingSent={isFollowingSent}
+        />
+      )}
     </div>
   );
 }
