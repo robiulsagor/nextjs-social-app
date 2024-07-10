@@ -3,6 +3,7 @@ import { User } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import prisma from "../../lib/client";
+import UpdateUser from "../UpdateUser";
 import UserInfoCardInteractions from "./UserInfoCardInteractions";
 
 async function UserInfoCard({ user }: { user: User }) {
@@ -54,9 +55,13 @@ async function UserInfoCard({ user }: { user: User }) {
       {/* top */}
       <div className="font-medium flex items-center justify-between text-sm">
         <span className="text-gray-500">User Informantion</span>
-        <Link href="/" className="text-blue-500 hover:underline">
-          See all{" "}
-        </Link>
+        {currentUserId === user.id ? (
+          <UpdateUser />
+        ) : (
+          <Link href="/" className="text-blue-500 hover:underline">
+            See all{" "}
+          </Link>
+        )}
       </div>
 
       {/* Name */}
