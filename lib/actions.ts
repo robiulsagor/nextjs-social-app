@@ -1,6 +1,8 @@
 "use server";
 
 import { auth } from "@clerk/nextjs/server";
+import { revalidatePath } from "next/cache";
+import { z } from "zod";
 import prisma from "./client";
 
 export const switchFollowing = async (userId: string) => {
@@ -116,6 +118,46 @@ export const removeRequest = async (id: number) => {
         id,
       },
     });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateUser = async (formData: FormData, cover: string) => {
+  const fields = Object.fromEntries(formData);
+
+  const filterFields = Object.fromEntries(
+    Object.entries(fields).filter(([key, value]) => value !== "")
+  );
+
+  const Profile = z.object({
+    cover: z.string().optional(),
+    name: z.string().max(45).optional(),
+    surname: z.string().max(45).optional(),
+    description: z.string().max(45).optional(),
+    city: z.string().max(45).optional(),
+    school: z.string().max(45).optional(),
+    work: z.string().max(45).optional(),
+    website: z.string().max(45).optional(),
+  });
+
+  const validatedFields = Profile.safeParse({ cover, ...filterFields });
+
+  if (!validatedFields.success) {
+    console.log(validatedFields.error);
+    console.log("error here :: ", validatedFields.error);
+
+    return "error";
+  }
+
+  const { userId } = auth();
+
+  try {
+    await prisma.user.update({
+      where: { id: userId },
+      data: validatedFields.data,
+    });
+    revalidatePath("/profile/[username]", "page");
   } catch (error) {
     console.log(error);
   }
