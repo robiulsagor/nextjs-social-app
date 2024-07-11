@@ -3,15 +3,28 @@
 import { User } from "@prisma/client";
 import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useActionState, useEffect, useState } from "react";
 import { updateUser } from "../../lib/actions";
+import UpdateButton from "./UpdateButton";
 
 function UpdateUser({ user }: { user: User }) {
   const [isOpen, setIsOpen] = useState(false);
   const [cover, setCover] = useState<any>();
+  const router = useRouter();
+
+  const [state, formAction] = useActionState(updateUser, {
+    success: false,
+    error: false,
+  });
 
   const openModal = () => setIsOpen(true);
-  const closeModal = () => setIsOpen(false);
+  const closeModal = () => {
+    setIsOpen(false);
+    state.success = false;
+    state.error = false;
+    router.refresh();
+  };
 
   // sideeffect to disable scrolling
   useEffect(() => {
@@ -50,7 +63,9 @@ function UpdateUser({ user }: { user: User }) {
           <form
             method="post"
             className="bg-white p-12 rounded-lg shadow-md md:w-1/2 xl:w-1/3 flex flex-col gap-4 w-full relative"
-            action={(formData) => updateUser(formData, cover?.secure_url)}
+            action={(formData) =>
+              formAction({ formData, cover: cover?.secure_url })
+            }
           >
             <h2 className="text-lg font-bold">Update User</h2>
             <span className=" text-gray-400 text-xs ">
@@ -176,9 +191,16 @@ function UpdateUser({ user }: { user: User }) {
                 />
               </div>
             </div>
-            <button className="bg-blue-600 text-white text-xs border-none rounded-lg p-2 hover:opacity-75 transition-all">
-              Submit
-            </button>
+            <UpdateButton />
+
+            {state.success && (
+              <span className="text-green-500">
+                User data updated successfully!
+              </span>
+            )}
+            {state.error && (
+              <span className="text-red-700">Something went wrong</span>
+            )}
 
             {/* modal close button */}
             <button

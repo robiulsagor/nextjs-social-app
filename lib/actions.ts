@@ -123,7 +123,11 @@ export const removeRequest = async (id: number) => {
   }
 };
 
-export const updateUser = async (formData: FormData, cover: string) => {
+export const updateUser = async (
+  prevState: { success: boolean; error: boolean },
+  payload: { formData: FormData; cover: string }
+) => {
+  const { formData, cover } = payload;
   const fields = Object.fromEntries(formData);
 
   const filterFields = Object.fromEntries(
@@ -147,7 +151,7 @@ export const updateUser = async (formData: FormData, cover: string) => {
     console.log(validatedFields.error);
     console.log("error here :: ", validatedFields.error);
 
-    return "error";
+    return { success: false, error: true };
   }
 
   const { userId } = auth();
@@ -158,7 +162,9 @@ export const updateUser = async (formData: FormData, cover: string) => {
       data: validatedFields.data,
     });
     revalidatePath("/profile/[username]", "page");
+    return { success: true, error: false };
   } catch (error) {
     console.log(error);
+    return { success: false, error: true };
   }
 };
