@@ -2,7 +2,6 @@ import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import Feed from "../../../components/feed/Feed";
-// import LeftMenu from "../../../components/LeftMenu";
 import LeftMenu from "../../../components/leftMenu/LeftMenu";
 import RightMenu from "../../../components/rightMenu/RightMenu";
 import prisma from "../../../lib/client";
@@ -108,7 +107,7 @@ async function ProfilePage({ params }: { params: { username: string } }) {
               </div>
             </div>
           </div>
-          <Feed />
+          <Feed username={username} />
         </div>
       </div>
       <div className="hidden lg:block w-[30%] ">
